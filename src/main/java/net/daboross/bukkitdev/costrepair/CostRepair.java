@@ -99,7 +99,7 @@ public class CostRepair extends JavaPlugin {
             if (economyHandler.has(p.getName(), cost)) {
                 EconomyResponse ecoResponse = economyHandler.withdrawPlayer(p.getName(), cost);
                 if (ecoResponse.type == EconomyResponse.ResponseType.SUCCESS) {
-                    itemStack.setDurability((short) 1);
+                    itemStack.setDurability((short) 0);
                     p.sendMessage(COLOR + "Your " + COLOR2 + itemName + COLOR + " has been repaired at a cost of " + COLOR2 + costHelper.getMoneySymbol() + cost);
                 } else if (ecoResponse.type == EconomyResponse.ResponseType.FAILURE) {
                     p.sendMessage(ERRCOLOR + "Could not withdraw " + ERRCOLOR2 + costHelper.getMoneySymbol() + cost + ERRCOLOR + " from your economy account");
