@@ -94,12 +94,12 @@ public class CostRepair extends JavaPlugin {
         String itemName = costHelper.getName(itemStack);
         int cost = costHelper.getCost(itemStack);
         if (cost <= 0 || itemName == null) {
-            p.sendMessage(ERRCOLOR + "The item " + ERRCOLOR2 + itemStack.getType().toString() + ERRCOLOR + " can not be repaired.");
+            p.sendMessage(ERRCOLOR + "The item " + ERRCOLOR2 + (itemName == null ? itemStack.getType().toString() : itemName) + ERRCOLOR + " can not be repaired.");
         } else {
             if (economyHandler.has(p.getName(), cost)) {
                 EconomyResponse ecoResponse = economyHandler.withdrawPlayer(p.getName(), cost);
                 if (ecoResponse.type == EconomyResponse.ResponseType.SUCCESS) {
-                    itemStack.setDurability(itemStack.getType().getMaxDurability());
+                    itemStack.setDurability((short) 1);
                     p.sendMessage(COLOR + "Your " + COLOR2 + itemName + COLOR + " has been repaired at a cost of " + COLOR2 + costHelper.getMoneySymbol() + cost);
                 } else if (ecoResponse.type == EconomyResponse.ResponseType.FAILURE) {
                     p.sendMessage(ERRCOLOR + "Could not withdraw " + ERRCOLOR2 + costHelper.getMoneySymbol() + cost + ERRCOLOR + " from your economy account");
@@ -120,7 +120,7 @@ public class CostRepair extends JavaPlugin {
         String itemName = costHelper.getName(itemStack);
         int cost = costHelper.getCost(itemStack);
         if (cost <= 0 || itemName == null) {
-            p.sendMessage(ERRCOLOR + "The item " + ERRCOLOR2 + itemStack.getType().toString() + ERRCOLOR + " can not be repaired.");
+            p.sendMessage(ERRCOLOR + "The item " + ERRCOLOR2 + (itemName == null ? itemStack.getType().toString() : itemName) + ERRCOLOR + " can not be repaired.");
         } else {
             if (economyHandler.has(p.getName(), cost)) {
                 p.sendMessage(COLOR + "Reparing your " + COLOR2 + itemName + COLOR + " will cost " + COLOR2 + costHelper.getMoneySymbol() + cost);
