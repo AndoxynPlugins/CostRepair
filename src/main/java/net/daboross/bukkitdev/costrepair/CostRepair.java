@@ -128,7 +128,7 @@ public class CostRepair extends JavaPlugin {
                 addConfirmationNeededPlayer(p);
             } else {
                 p.sendMessage(ERRCOLOR + "You do not have enough money to repair " + ERRCOLOR2 + itemName);
-                p.sendMessage(ERRCOLOR2 + cost + ERRCOLOR + " is needed to repair " + ERRCOLOR2 + itemName);
+                p.sendMessage(ERRCOLOR2 + costHelper.getMoneySymbol() + cost + ERRCOLOR + " is needed to repair " + ERRCOLOR2 + itemName);
             }
         }
     }
