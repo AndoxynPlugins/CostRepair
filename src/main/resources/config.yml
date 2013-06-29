@@ -1,0 +1,112 @@
+# CostRepair Configuration
+#
+#  --- Money Symbol ---
+# Changing 'money-symbol' will change the money symbol in game used by CostRepair
+#
+#  --- Costs ---
+# Each value in costs is the cost of the item name
+# The item names are found in the 'item-names' section.
+# Changing the cost to 0 will make the item unrepairable.
+#
+#  --- Item Names ---
+# Each of the values in item-names contains an item name and uses the item's
+# ID as a key. If you add new IDs to this section and also add their names
+# into the cost section then the item will be repairable.
+# WARNING: You may have unexpected results 'repairing' items that aren't tools or
+# armor.
+
+money-symbol: '$'
+costs:
+  iron-shovel: 0
+  iron-pickaxe: 0
+  iron-axe: 0
+  flint-and-steel: 0
+  iron-sword: 0
+  wooden-sword: 0
+  wooden-shovel: 0
+  wooden-pickaxe: 0
+  wooden-axe: 0
+  stone-sword: 0
+  stone-shovel: 0
+  stone-pickaxe: 0
+  stone-axe: 0
+  diamond-sword: 0
+  diamond-shovel: 0
+  diamond-pickaxe: 0
+  diamond-axe: 0
+  golden-sword: 0
+  golden-shovel: 0
+  golden-pickaxe: 0
+  golden-axe: 0
+  wooden-hoe: 0
+  stone-hoe: 0
+  iron-hoe: 0
+  diamond-hoe: 0
+  gold-hoe: 0
+  leather-cap: 0
+  leather-tunic: 0
+  leather-pants: 0
+  leather-boots: 0
+  chain-helmet: 0
+  chain-chestplate: 0
+  chain-leggings: 0
+  chain-boots: 0
+  iron-helmet: 0
+  iron-chestplate: 0
+  iron-leggings: 0
+  iron-boots: 0
+  diamond-helmet: 0
+  diamond-chestplate: 0
+  diamond-leggings: 0
+  diamond-boots: 0
+  golden-helmet: 0
+  golden-chestplate: 0
+  golden-leggings: 0
+  golden-boots: 0
+item-names:
+  256: iron-shovel
+  257: iron-pickaxe
+  258: iron-axe
+  259: flint-and-steel
+  267: iron-sword
+  268: wooden-sword
+  269: wooden-shovel
+  270: wooden-pickaxe
+  271: wooden-axe
+  272: stone-sword
+  273: stone-shovel
+  274: stone-pickaxe
+  275: stone-axe
+  276: diamond-sword
+  277: diamond-shovel
+  278: diamond-pickaxe
+  279: diamond-axe
+  283: golden-sword
+  284: golden-shovel
+  285: golden-pickaxe
+  286: golden-axe
+  290: wooden-hoe
+  291: stone-hoe
+  292: iron-hoe
+  293: diamond-hoe
+  294: gold-hoe
+  298: leather-cap
+  299: leather-tunic
+  300: leather-pants
+  301: leather-boots
+  302: chain-helmet
+  303: chain-chestplate
+  304: chain-leggings
+  305: chain-boots
+  306: iron-helmet
+  307: iron-chestplate
+  308: iron-leggings
+  309: iron-boots
+  310: diamond-helmet
+  311: diamond-chestplate
+  312: diamond-leggings
+  313: diamond-boots
+  314: golden-helmet
+  315: golden-chestplate
+  316: golden-leggings
+  317: golden-boots

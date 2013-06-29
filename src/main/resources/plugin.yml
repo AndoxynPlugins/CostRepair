@@ -1,0 +1,13 @@
+author: Dabo Ross
+description: Allows repairing at a cost
+main: net.daboross.bukkitdev.costrepair.CostRepair
+name: CostRepair
+version: 1.0'
+depend: [Vault]
+commands:
+  crepair:
+    description: Repairs the item in your hand at a cost.
+    usage: |
+      To repair the item in your hand: /<command>
+    permissions: costrepair.use
+    aliases: [costrepair, repair, repairme]
