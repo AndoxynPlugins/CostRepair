@@ -75,13 +75,13 @@ public class CostRepair extends JavaPlugin {
                         playersWaitingConfirmation.remove(p.getName());
                         repairItemConfirmed(p);
                     } else {
-                        repairItemConfirmationNeeded(p);
+                        repairItemConfirmationNeeded(p, label);
                     }
                 } else {
                     sender.sendMessage(ERRCOLOR + "You must be a player to use " + ERRCOLOR2 + "/" + label);
                 }
             } else {
-                sender.sendMessage(ERRCOLOR + "You don't have permission to use " + ERRCOLOR2 + "/" + label);
+                sender.sendMessage(ERRCOLOR + "You don't have permission to use " + ERRCOLOR2 + "/" + label + ERRCOLOR + ". You need the permission '" + ERRCOLOR2 + PERMISSION + ERRCOLOR + "'");
             }
         } else {
             sender.sendMessage(COLOR + "Command '" + COLOR2 + command.getName() + COLOR + "' unknown to CostRepair");
@@ -115,7 +115,7 @@ public class CostRepair extends JavaPlugin {
         }
     }
 
-    private void repairItemConfirmationNeeded(Player p) {
+    private void repairItemConfirmationNeeded(Player p, String commandLabel) {
         ItemStack itemStack = p.getItemInHand();
         String itemName = costHelper.getName(itemStack);
         int cost = costHelper.getCost(itemStack);
@@ -124,7 +124,7 @@ public class CostRepair extends JavaPlugin {
         } else {
             if (economyHandler.has(p.getName(), cost)) {
                 p.sendMessage(COLOR + "Reparing your " + COLOR2 + itemName + COLOR + " will cost " + COLOR2 + costHelper.getMoneySymbol() + cost);
-                p.sendMessage(COLOR + "Type " + COLOR2 + "/" + CMD_NAME + COLOR + " again in the next 10 seconds to confirm repair.");
+                p.sendMessage(COLOR + "Type " + COLOR2 + "/" + commandLabel + COLOR + " again in the next 10 seconds to confirm repair.");
                 addConfirmationNeededPlayer(p);
             } else {
                 p.sendMessage(ERRCOLOR + "You do not have enough money to repair " + ERRCOLOR2 + itemName);
