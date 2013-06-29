@@ -30,6 +30,13 @@ public class CostHelper {
         return fc.getInt("");
     }
 
+    public String getName(ItemStack itemStack) {
+        int id = itemStack.getTypeId();
+        FileConfiguration fc = main.getConfig();
+        String name = fc.getString("item-names." + id);
+        return name;
+    }
+
     public String getMoneySymbol() {
         return main.getConfig().getString("money-symbol");
     }

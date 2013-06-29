@@ -7,10 +7,12 @@ package net.daboross.bukkitdev.costrepair;
 
 import java.util.HashSet;
 import java.util.Set;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,6 +31,7 @@ public class CostRepair extends JavaPlugin {
     private static final String ERRCOLOR2 = ChatColor.DARK_RED.toString();
     private final Set<String> playersWaitingConfirmation = new HashSet<String>();
     private CostHelper costHelper;
+    private Economy economyHandler;
 
     @Override
     public void onEnable() {
@@ -38,7 +41,6 @@ public class CostRepair extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
         playersWaitingConfirmation.clear();
     }
 
@@ -49,7 +51,10 @@ public class CostRepair extends JavaPlugin {
                 if (sender instanceof Player) {
                     Player p = (Player) sender;
                     if (playersWaitingConfirmation.contains(p.getName())) {
-                        repairItem(p);
+                        playersWaitingConfirmation.remove(p);
+                        repairItemConfirmed(p);
+                    } else {
+                        repairItemConfirmationNeeded(p);
                     }
                 } else {
                     sender.sendMessage(ERRCOLOR + "You must be a player to use " + ERRCOLOR2 + "/" + label);
@@ -63,13 +68,58 @@ public class CostRepair extends JavaPlugin {
         return true;
     }
 
-    private void repairItem(Player p) {
+    private void repairItemConfirmed(Player p) {
         ItemStack itemStack = p.getItemInHand();
+        String itemName = costHelper.getName(itemStack);
         int cost = costHelper.getCost(itemStack);
-        if (cost <= 0) {
-            p.sendMessage(ERRCOLOR + "The item " + ERRCOLOR2 + itemStack.getType().toString() + ERRCOLOR + " cannot be repaired.");
-            return;
+        if (cost <= 0 || itemName == null) {
+            p.sendMessage(ERRCOLOR + "The item " + ERRCOLOR2 + itemStack.getType().toString() + ERRCOLOR + " can not be repaired.");
+        } else {
+            if (economyHandler.has(p.getName(), cost)) {
+                EconomyResponse ecoResponse = economyHandler.withdrawPlayer(p.getName(), cost);
+                if (ecoResponse.type == EconomyResponse.ResponseType.SUCCESS) {
+                    itemStack.setDurability(itemStack.getType().getMaxDurability());
+                    p.sendMessage(COLOR + "Your " + COLOR2 + itemName + COLOR + " has been repaired at a cost of " + COLOR2 + costHelper.getMoneySymbol() + cost);
+                } else if (ecoResponse.type == EconomyResponse.ResponseType.FAILURE) {
+                    p.sendMessage(ERRCOLOR + "Could not withdraw " + ERRCOLOR2 + costHelper.getMoneySymbol() + cost + ERRCOLOR + " from your economy account");
+                    p.sendMessage(ERRCOLOR + "Returned with error: " + ERRCOLOR2 + ecoResponse.errorMessage);
+                } else if (ecoResponse.type == EconomyResponse.ResponseType.NOT_IMPLEMENTED) {
+                    p.sendMessage(ERRCOLOR + "Economy does not support withdrawing money.");
+                    p.sendMessage(ERRCOLOR + "Could not repair your " + ERRCOLOR2 + itemName);
+                }
+            } else {
+                p.sendMessage(ERRCOLOR + "You do not have enough money to repair " + ERRCOLOR2 + itemName);
+                p.sendMessage(ERRCOLOR2 + cost + ERRCOLOR + " is needed to repair " + ERRCOLOR2 + costHelper.getMoneySymbol() + itemName);
+            }
         }
-        
+    }
+
+    private void repairItemConfirmationNeeded(Player p) {
+        ItemStack itemStack = p.getItemInHand();
+        String itemName = costHelper.getName(itemStack);
+        int cost = costHelper.getCost(itemStack);
+        if (cost <= 0 || itemName == null) {
+            p.sendMessage(ERRCOLOR + "The item " + ERRCOLOR2 + itemStack.getType().toString() + ERRCOLOR + " can not be repaired.");
+        } else {
+            if (economyHandler.has(p.getName(), cost)) {
+                p.sendMessage(COLOR + "Reparing your " + COLOR2 + itemName + COLOR + " will cost " + COLOR2 + costHelper.getMoneySymbol() + cost);
+                p.sendMessage(COLOR + "Type " + COLOR2 + "/" + CMD_NAME + COLOR + " again in the next 10 seconds to confirm repair.");
+                addConfirmationNeededPlayer(p);
+            } else {
+                p.sendMessage(ERRCOLOR + "You do not have enough money to repair " + ERRCOLOR2 + itemName);
+                p.sendMessage(ERRCOLOR2 + cost + ERRCOLOR + " is needed to repair " + ERRCOLOR2 + itemName);
+            }
+        }
+    }
+
+    private void addConfirmationNeededPlayer(Player p) {
+        final String name = p.getName();
+        playersWaitingConfirmation.add(name);
+        Bukkit.getScheduler().runTaskLater(this, new Runnable() {
+            @Override
+            public void run() {
+                playersWaitingConfirmation.remove(name);
+            }
+        }, 200);
     }
 }
