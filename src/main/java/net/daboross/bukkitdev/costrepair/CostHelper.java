@@ -27,14 +27,11 @@ public class CostHelper {
         if (name == null) {
             return -1;
         }
-        return fc.getInt("");
+        return fc.getInt("costs." + name);
     }
 
     public String getName(ItemStack itemStack) {
-        int id = itemStack.getTypeId();
-        FileConfiguration fc = main.getConfig();
-        String name = fc.getString("item-names." + id);
-        return name;
+        return main.getConfig().getString("item-names." + itemStack.getTypeId());
     }
 
     public String getMoneySymbol() {
