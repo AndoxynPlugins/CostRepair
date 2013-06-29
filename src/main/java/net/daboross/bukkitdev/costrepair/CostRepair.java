@@ -7,6 +7,7 @@ package net.daboross.bukkitdev.costrepair;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
@@ -15,6 +16,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -37,6 +40,24 @@ public class CostRepair extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         costHelper = new CostHelper(this);
+        setupVault(Bukkit.getPluginManager());
+    }
+
+    private void setupVault(PluginManager pm) {
+        if (pm.isPluginEnabled("Vault")) {
+            RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+            economyHandler = rsp.getProvider();
+            if (economyHandler == null) {
+                getLogger().log(Level.INFO, "Vault found, but Economy handler not found.");
+            } else {
+                getLogger().log(Level.INFO, "Vault and Economy handler found.");
+            }
+        } else {
+            getLogger().log(Level.INFO, "Vault not found.");
+        }
+        if (economyHandler == null) {
+            pm.disablePlugin(this);
+        }
     }
 
     @Override
@@ -51,7 +72,7 @@ public class CostRepair extends JavaPlugin {
                 if (sender instanceof Player) {
                     Player p = (Player) sender;
                     if (playersWaitingConfirmation.contains(p.getName())) {
-                        playersWaitingConfirmation.remove(p);
+                        playersWaitingConfirmation.remove(p.getName());
                         repairItemConfirmed(p);
                     } else {
                         repairItemConfirmationNeeded(p);
