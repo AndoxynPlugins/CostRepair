@@ -2,8 +2,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.daboross.bukkitdev.costrepair</groupId>
     <artifactId>CostRepair</artifactId>
-    <version>0.1</version>
     <packaging>jar</packaging>
+    <version>0.1</version>
     <name>CostRepair</name>
     <repositories>
         <repository>
