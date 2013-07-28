@@ -1,8 +1,8 @@
 author: Dabo Ross
 description: Allows repairing at a cost
 main: net.daboross.bukkitdev.costrepair.CostRepair
-name: CostRepair
-version: 1.0
+name: ${project.name}
+version: ${project.version}
 depend: [Vault]
 commands:
   crepair:
