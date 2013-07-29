@@ -1,8 +1,8 @@
+name: ${project.name}
+main: net.daboross.bukkitdev.costrepair.CostRepair
+version: ${project.version}
 author: Dabo Ross
 description: Allows repairing at a cost
-main: net.daboross.bukkitdev.costrepair.CostRepair
-name: ${project.name}
-version: ${project.version}
 depend: [Vault]
 commands:
   crepair:
